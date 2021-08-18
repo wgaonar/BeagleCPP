@@ -20,15 +20,18 @@ int main()
   
   GPIO ledPin(P8_12, OUTPUT);
 
-  for (int i = 0; i < 10; i++)   
+  ledPin.StreamOpen();
+  for (int i = 0; i < 1000000; i++)   
   {
-    cout << "Blinking " << i+1 << " times of " << 10 <<  endl;
-    
-    ledPin.DigitalWriteFast(HIGH);
-    DelayMicroseconds(10);
+    ledPin.StreamWrite(HIGH);
+    ledPin.StreamWrite(LOW);
+  }
+  ledPin.StreamClose();
 
-    ledPin.DigitalWriteFast(LOW);
-    DelayMicroseconds(10);
+  for (int i = 0; i < 1000000; i++)   
+  {
+    ledPin.DigitalWrite(HIGH);
+    ledPin.DigitalWrite(LOW);
   }
 
   message = "Main program finishes here...";
