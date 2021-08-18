@@ -1,5 +1,5 @@
 #include <iostream>
-#include <fstream>
+#include <sstream>
 #include <string>
 #include <chrono> // chrono::milliseconds()
 #include <thread> // this_thread::sleep_for()
@@ -28,7 +28,7 @@ GPIO::GPIO (GPIO_ID newId)
 {
   id = newId;
   InitGPIOPin();
-  std::cout << RainbowText("Setting the GPIO pin was a success!\n\n", "Green");
+  std::cout << RainbowText("Setting the GPIO pin was a success!. It is needed to setup pin's direction (I/O)\n\n", "Green");
 }
 
 // Overload constructor with the pin id and mode
@@ -179,6 +179,13 @@ int GPIO::UnexportGPIO()
 */
 int GPIO::DigitalWrite(STATE newState) 
 {
+  // Confirm the pin's mode is OUTPUT
+  if (mode != OUTPUT)
+  {
+    perror("The pin is NOT in OUTPUT mode");
+    throw GPIO_Exception("Error in the 'DigitalWrite' method");
+  }
+
   switch (newState) 
   {
     case HIGH:
@@ -207,6 +214,13 @@ int GPIO::DigitalWrite(STATE newState)
 */
 int GPIO::DigitalWrite(STATE newState, bool printingFlag) 
 {
+  // Confirm the pin's mode is OUTPUT
+  if (mode != OUTPUT)
+  {
+    perror("The pin is NOT in OUTPUT mode");
+    throw GPIO_Exception("Error in the 'DigitalWrite' method");
+  }
+
   switch (newState) 
   {
     case HIGH:
@@ -216,7 +230,7 @@ int GPIO::DigitalWrite(STATE newState, bool printingFlag)
         throw GPIO_Exception("Error in the 'DigitalWrite' method");
       }
       if (printingFlag == true)
-        std::cout << "Setting the pin value as: " << "HIGH" << std::endl;
+        std::cout << RainbowText("Setting the pin value as: HIGH\n", "Green");
       break;
     case LOW:
       if (WriteFile(path, "value", "0") != 1)
@@ -225,9 +239,25 @@ int GPIO::DigitalWrite(STATE newState, bool printingFlag)
         throw GPIO_Exception("Error in the 'DigitalWrite' method");
       }
       if (printingFlag == true)
-        std::cout << "Setting the pin value as: " << "LOW" << std::endl;
+        std::cout << RainbowText("Setting the pin value as: LOW\n", "Green");
       break;
   }   
+  return 1;
+}
+
+/*
+  Public method to set/clear the pin value in a Fast way
+  @param STATE: The desired value LOW / HIGH 
+  @return int: 1 set value has succeeded
+*/
+int GPIO::DigitalWriteFast(STATE newState) 
+{
+  std::ofstream stream;
+  
+  stream.open((path + "value").c_str());
+  stream << newState << std::flush;
+  stream.close();
+
   return 1;
 }
 
@@ -242,6 +272,21 @@ STATE GPIO::DigitalRead()
     return LOW;
   else
     return HIGH;
+}
+
+/*
+  Public callback method to do a user Customized function when is called
+  @param callbackType: user function pointer to execute 
+  @return int: 1 the user function was called      
+*/
+
+int GPIO::DoUserFunction (callbackType callbackFunction) {
+  std::string message = "'UserFunction' method has been activated!";
+  std::cout << RainbowText(message, "Green", "Default", "Bold") << std::endl;
+
+  std::thread functionThread(callbackFunction);
+  functionThread.detach();
+  return 1;
 }
 
 // Destructor

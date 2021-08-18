@@ -2,6 +2,7 @@
 #define GPIO_H
 
 #include <string>
+#include <fstream>
 #include <thread>
 #include <map>
 
@@ -9,6 +10,17 @@
 #include "BLACKPIN_ID.h"
 #include "SYSFILEACCESS.h"
 #include "MISCELLANEOUS.h"
+
+/* 
+  Declare a type for a function pointer
+  It is the construct for: using function_type = int (*) ()
+    function_type:  the function name
+    int: return type  
+    (*): the dereference operator due to the address of the function name
+    (): the arguments of the function, in this case void
+  Stores the address of a function 
+*/
+using callbackType = int (*)();
 
 const std::string GPIO_PATH("/sys/class/gpio/");
 
@@ -75,8 +87,14 @@ class GPIO : public SYSFILEACCESS
     // Overload Interface method to set the GPIO pin state and printing the value
     virtual int DigitalWrite(STATE, bool);
 
+    // Overload Interface method to set the GPIO pin state using stringstream
+    virtual int DigitalWriteFast(STATE);
+
     // Interface method to get the GPIO pin state
     virtual STATE DigitalRead();
+
+    // Method to do execute an user function
+    virtual int DoUserFunction(callbackType);
 
     // Destructor
     virtual ~GPIO ();    
