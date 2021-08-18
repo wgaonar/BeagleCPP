@@ -44,6 +44,8 @@ class GPIO : public SYSFILEACCESS
     std::string name;   /* The name of the GPIO e.g. gpio44 */
     std::string path;   /* The full path to the GPIO e.g. /sys/class/gpio/gpio44 */
 
+    std::ofstream stream;
+
     /* Map to store the BeagleBone Black pin`s kernel number with its header name */
     std::map <int, std::string> blackPinIdMap;
 
@@ -87,8 +89,14 @@ class GPIO : public SYSFILEACCESS
     // Overload Interface method to set the GPIO pin state and printing the value
     virtual int DigitalWrite(STATE, bool);
 
+    //Interface method to open the stream to fast write
+    virtual int StreamOpen();
+
     // Overload Interface method to set the GPIO pin state using stringstream
-    virtual int DigitalWriteFast(STATE);
+    virtual int StreamWrite(STATE);
+    
+    //Interface method to close the stream to fast write
+    virtual int StreamClose();
 
     // Interface method to get the GPIO pin state
     virtual STATE DigitalRead();

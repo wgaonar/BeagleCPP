@@ -246,18 +246,33 @@ int GPIO::DigitalWrite(STATE newState, bool printingFlag)
 }
 
 /*
+  Public method to open the stream to Write in a Fast way
+  @return int: 1 open the stream has succeeded
+*/
+int GPIO::StreamOpen()
+{
+  stream.open((path + "value").c_str());
+  return 1;
+}
+
+/*
   Public method to set/clear the pin value in a Fast way
   @param STATE: The desired value LOW / HIGH 
   @return int: 1 set value has succeeded
 */
-int GPIO::DigitalWriteFast(STATE newState) 
-{
-  std::ofstream stream;
-  
-  stream.open((path + "value").c_str());
+int GPIO::StreamWrite(STATE newState) 
+{  
   stream << newState << std::flush;
-  stream.close();
+  return 1;
+}
 
+/*
+  Public method to close the stream to Write in a Fast way
+  @return int: 1 close the stream has succeeded
+*/
+int GPIO::StreamClose()
+{
+  stream.close();
   return 1;
 }
 
