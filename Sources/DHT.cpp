@@ -21,17 +21,16 @@ DHT::DHT (GPIO newDataPin, DHT_TYPE newTypeID) :
 void DHT::InitSensor() 
 {
   dataPin.SetMode(OUTPUT);
+  dataPin.StreamOpen();
   while (true)
   {
     
-  
-
   // Set pin LOW for ~18 milliseconds.
-  dataPin.DigitalWriteFast(LOW);
-  DelayMicroseconds(40);
+  dataPin.StreamWrite(LOW);
+  DelayMicroseconds(18);
 
   // Set pin HIGH for 40 microseconds.
-  dataPin.DigitalWriteFast(HIGH);
+  dataPin.StreamWrite(HIGH);
   DelayMicroseconds(40);
 
   // Put the pin in INPUT Mode
