@@ -65,6 +65,9 @@ class GPIO : public SYSFILEACCESS
     // Overload constructor with the pin id and mode
     GPIO (GPIO_ID, MODE);
 
+    // Copy construnctor
+    GPIO (GPIO&);
+
     // Accessor method to get the kernel pin's number
     virtual int GetPinKernelId();
 

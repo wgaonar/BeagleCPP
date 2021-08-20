@@ -41,6 +41,16 @@ GPIO::GPIO (GPIO_ID newId, MODE newMode)
   std::cout << RainbowText("Setting the GPIO pin with direction (I/O) was a success!\n\n", "Green");
 }
 
+// Copy constructor with the pin id and mode
+GPIO::GPIO (GPIO& moveSource) 
+{
+  id = moveSource.id;
+  mode = moveSource.mode;
+  InitGPIOPin();
+  SetMode(mode);
+  std::cout << RainbowText("Setting the GPIO pin with direction (I/O) was a success!\n\n", "Green");
+}
+
 // Private method to initialize the GPIO pin
 void GPIO::InitGPIOPin()
 {
