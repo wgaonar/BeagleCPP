@@ -22,13 +22,14 @@ bool stopReadTemperature = false;
 double temperatureCelsius = 0.0;
 double temperatureFahrenheit = 0.0;
 
-int ReadTemperature() {
+/* int ReadTemperature() 
+{
   while (stopReadTemperature == false) 
   {
     DelayMilliseconds(250);
   }
   return 0;
-}
+} */
 
 int main()
 {
@@ -36,7 +37,7 @@ int main()
   cout << RainbowText(message,"Blue", "White", "Bold") << endl;
 
   // Call the function to read the temperature
-  mySensor.DoUserFunction(&ReadTemperature);
+  // mySensor.DoUserFunction(&ReadTemperature);
 
   char userInput = '\0';
   while (userInput != 'y') 
