@@ -4,7 +4,7 @@ LM35_1.1.cpp
 05/08/2021
 https://github.com/wgaonar/BeagleCPP
 
-Make and show 20 distance readings each half second
+Read the temperature each 250 ms until the user enter a keystroke
 
 Class: LM35
 ******************************************************************************/

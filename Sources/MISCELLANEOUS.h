@@ -1,7 +1,7 @@
 #ifndef MISCELLANEOUS_H
 #define MISCELLANEOUS_H
 
-// A file that holds some usefull functions
+// A file that holds some useful functions
 
 // Delay method in milliseconds
 void DelayMilliseconds(int);

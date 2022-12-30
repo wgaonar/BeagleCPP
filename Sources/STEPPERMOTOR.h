@@ -10,10 +10,10 @@
 /* The numeric value for the stop mode on the motor: e.g. 0/1 for idle/brake */
 enum STEPPER_MODE 
 {
-  driver,
   fullStep1Coil,
   fullStep2Coils,
   halfStep,
+  driver,
 };
 
 enum DIRECTION
@@ -74,7 +74,7 @@ private:
   GPIO motorPin4;
   STEPPER_MODE controlMode;
   unsigned int stepsPerRevolution;
-  unsigned int maxSpeed;
+  unsigned int maxSpeed; // In steps / sec
 
   // Number of the steps required to be activated according to the stepper motor's  mode
   unsigned int stepsPerMode;
@@ -88,7 +88,7 @@ private:
   // Initialize the GPIO pins with the data provided by the constructor
   virtual void InitMotorPins();
 
-  // Method to activate 1 step the coils   
+  // Method to activate the coils for only 1 step  
   virtual void Turn1Step(int, int);
 
   // Method to turn the motor continuously in a thread

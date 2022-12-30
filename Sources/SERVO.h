@@ -18,7 +18,7 @@ private:
   PWM pwmPin;
   int minimumPulseWidth;  // Minimum pulse width in ns
   int averagePulseWidth;  // Average pulse width in ns
-  int maximumPulseWidth;  // Maximun pulse width in ns
+  int maximumPulseWidth;  // Maximum pulse width in ns
 
   // Set the Servo period for the PWM pin  
   virtual void InitServo();

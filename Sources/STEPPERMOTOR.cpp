@@ -41,7 +41,7 @@ StepperMotor::StepperMotor (GPIO newMotorPin1,
       stepsPerMode = fullStep2CoilsVector.size(); 
       break;
     case driver:
-      modeString = "Driver mode was choosen"; 
+      modeString = "Driver mode was chosen"; 
       break;
   }
 
@@ -73,7 +73,7 @@ void StepperMotor::InitMotorPins()
 }
 
 /*
-  Private method to activate 1 step the coils in in CW or CCW direction
+  Private method to activate 1 step the coils in CW or CCW direction
   @param: int: The proper step to activate the coils 
   @param: int: The desired speed in steps / second   
 */
@@ -102,6 +102,8 @@ void StepperMotor::Turn1Step(int coilStep, int speed)
       break;
     case driver:
       break;
+    default:
+      break;
   }
 
   // Wait the proper microseconds before the next step
@@ -112,7 +114,7 @@ void StepperMotor::Turn1Step(int coilStep, int speed)
   Public method to turn the motor by steps
   @param DIRECTION: The desired direction for the motor rotation
   @param unsigned int: The steps required
-  @param unsigned int: The rotation's speed in steps/sec (0,maxSpeed]    
+  @param unsigned int: The rotation's speed in steps / sec (0,maxSpeed]    
   @param bool: Flag to print / no print the messages on the console. Default value: <false>     
 */
 void StepperMotor::TurnBySteps(
