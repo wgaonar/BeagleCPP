@@ -82,9 +82,11 @@
     "DCMOTOR",
     "EHRPWM",
     "epwmss",
+    "Millis",
     "Protoboard",
     "PWMA",
     "STBY",
+    "STEPPERMOTOR",
     "STOPMODE",
     "Vout"
   ],
