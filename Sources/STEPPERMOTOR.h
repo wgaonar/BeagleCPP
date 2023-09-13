@@ -7,7 +7,6 @@
 
 #include "GPIO.h"
 
-/* The numeric value for the stop mode on the motor: e.g. 0/1 for idle/brake */
 enum STEPPER_MODE 
 {
   fullStep1Coil,
@@ -55,15 +54,15 @@ const std::vector <std::vector<STATE>> fullStep2CoilsVector
   C++17 inline signals the linker that only one instance 
   of the variable should exist
 */ 
-inline std::vector <std::thread> stepperThreads;
+// inline std::vector <std::thread> stepperThreads;
 
-// 
+
 /* 
   Mutex instance to protect the GPIO access from the threads
   C++17 inline signals the linker that only one instance 
   of the variable should exist
 */ 
-inline std::mutex stepperMutex;
+// inline std::mutex stepperMutex;
 
 class StepperMotor
 {
@@ -72,9 +71,15 @@ private:
   GPIO motorPin2;
   GPIO motorPin3;
   GPIO motorPin4;
+
   STEPPER_MODE controlMode;
+
+  // Explicit default stepper motor's parameters
+  static const unsigned int defaultStepsPerRevolution {2048};
+  static const unsigned int defaultMaxStepsPerSecond {500};
+
   unsigned int stepsPerRevolution;
-  unsigned int maxSpeed; // In steps / sec
+  unsigned int maxStepsPerSecond;
 
   // Number of the steps required to be activated according to the stepper motor's  mode
   unsigned int stepsPerMode;
@@ -91,8 +96,16 @@ private:
   // Method to activate the coils for only 1 step  
   virtual void Turn1Step(int, int);
 
+  // Mutexes to protect the shared variables
+  std::mutex mut;
+ 
+  // Flags for thread communication
+  bool finishThreadFlag {false};
+
   // Method to turn the motor continuously in a thread
-  virtual void MakeTurnByStepsInThread(DIRECTION, unsigned int, unsigned int);
+  virtual void MakeTurnByStepsInThread(DIRECTION, unsigned int, unsigned int, bool);
+
+  std::vector <std::thread> stepperThreadsVector;
 
 public:
   // Default constructor
@@ -101,16 +114,24 @@ public:
   // Overload constructor
   StepperMotor( 
                 GPIO, GPIO, GPIO, GPIO, 
-                STEPPER_MODE controlMode = fullStep1Coil, 
-                unsigned int stepsPerRevolution = 2048, 
-                unsigned int maxSpeed = 500
+                STEPPER_MODE controlMode = fullStep1Coil,
+                unsigned int stepsPerRevolution = defaultStepsPerRevolution, 
+                unsigned int maxStepsPerSecond = defaultMaxStepsPerSecond 
               );
 
   // Interface method to turn the motor by steps
   virtual void TurnBySteps(
                             DIRECTION, 
                             unsigned int stepsRequired, 
-                            unsigned int speed = 500, 
+                            unsigned int speed = defaultMaxStepsPerSecond, 
+                            bool printMessages = false
+                          );
+
+  // Interface method to turn the motor by degrees
+  virtual void TurnByDegrees(
+                            DIRECTION, 
+                            double degreesRequired, 
+                            double speed = defaultMaxStepsPerSecond, 
                             bool printMessages = false
                           );
 
@@ -118,17 +139,12 @@ public:
   virtual void TurnByStepsInThread(
                                     DIRECTION, 
                                     unsigned int stepsRequired,
-                                    unsigned int speed = 500, 
+                                    unsigned int speed = defaultMaxStepsPerSecond, 
                                     bool printMessages = false
                                   );
 
-  // Interface method to turn the motor by degrees
-  virtual void TurnByDegrees(
-                            DIRECTION, 
-                            double degreesRequired, 
-                            double speed = 500, 
-                            bool printMessages = false
-                          );
+  // Interface method to get the absolute steps counter
+  virtual void SetFinishThreadFlag(bool);
 
   // Interface method to get the absolute steps counter
   virtual int GetStepsCounter();

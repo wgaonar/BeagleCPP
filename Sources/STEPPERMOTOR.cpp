@@ -12,14 +12,14 @@ StepperMotor::StepperMotor (GPIO newMotorPin1,
                             GPIO newMotorPin4,
                             STEPPER_MODE newControlMode,
                             unsigned int newStepsPerRevolution,
-                            unsigned int newMaxSpeed) :
+                            unsigned int newMaxStepsPerSecond) :
                             motorPin1 (newMotorPin1),
                             motorPin2 (newMotorPin2),
                             motorPin3 (newMotorPin3),
                             motorPin4 (newMotorPin4),
                             controlMode (newControlMode),
                             stepsPerRevolution (newStepsPerRevolution),
-                            maxSpeed (newMaxSpeed)
+                            maxStepsPerSecond (newMaxStepsPerSecond)
 {
   InitMotorPins();
   stepsCounter = 0;
@@ -56,7 +56,7 @@ StepperMotor::StepperMotor (GPIO newMotorPin1,
             std::string("\tMotorPin4: ") + this->motorPin4.GetPinHeaderId() + 
             "\n" +
             std::string("\tControl Mode: ") + modeString + "\n" +
-            std::string("\tMax speed: ") + std::to_string(maxSpeed) + "\n\n";
+            std::string("\tMax speed: ") + std::to_string(this->maxStepsPerSecond) + "\n\n";
   std::cout << RainbowText(message, "Light Gray");
 }
 
@@ -114,7 +114,7 @@ void StepperMotor::Turn1Step(int coilStep, int speed)
   Public method to turn the motor by steps
   @param DIRECTION: The desired direction for the motor rotation
   @param unsigned int: The steps required
-  @param unsigned int: The rotation's speed in steps / sec (0,maxSpeed]    
+  @param unsigned int: The rotation's speed in steps / sec (0,MaxStepsPerSecond]    
   @param bool: Flag to print / no print the messages on the console. Default value: <false>     
 */
 void StepperMotor::TurnBySteps(
@@ -125,8 +125,8 @@ void StepperMotor::TurnBySteps(
                               )
 {
   // Check the speed limit value
-  if (speed > maxSpeed)
-    speed = maxSpeed;
+  if (speed > maxStepsPerSecond)
+    speed = maxStepsPerSecond;
 
   int coilStep {0};
 
@@ -145,7 +145,7 @@ void StepperMotor::TurnBySteps(
     std::cout << RainbowText(message, "Light Gray");
   }
 
-  // Turn 1 step in CW direction
+  // Turn in CW direction
   if (direction == CW)
   {
     for (int i = 0; i < stepsRequired; i++)
@@ -158,7 +158,7 @@ void StepperMotor::TurnBySteps(
       currentStep++;
     }
   }
-  // Turn 1 step in CCW direction
+  // Turn in CCW direction
   else if (direction == CCW)
   {
     for (int i = 0; i < stepsRequired; i++)
@@ -174,61 +174,10 @@ void StepperMotor::TurnBySteps(
 }
 
 /*
-  Public method to turn the motor continuously inside a thread
-  @param DIRECTION: The desired direction for the motor rotation
-  @param unsigned int: The steps required
-  @param unsigned int: The rotation's speed in steps/sec (0,maxSpeed] 
-  @param bool: Flag to print / no print the messages on the console. Default value: <false> 
-*/
-void StepperMotor::TurnByStepsInThread( 
-                                        DIRECTION direction, 
-                                        unsigned int stepsRequired,
-                                        unsigned int speed, 
-                                        bool printMessages
-                                      )
-{
-  if (printMessages == true)
-  {
-    std::string message = "Rotation in a thread has been activated with a speed of: " + 
-                          std::to_string(speed) + " steps/second\n";
-    std::cout << RainbowText(message, "Light Gray");
-  }
-  
-  std::thread rotationThread = std::thread( 
-                                            &StepperMotor::MakeTurnByStepsInThread, 
-                                            this,
-                                            direction,
-                                            stepsRequired, 
-                                            speed
-                                          );
-
-  stepperThreads.push_back(std::move(rotationThread));
-}
-
-/*
-  Private method that contains the routine to turn the motor continuously
-  @param DIRECTION: The desired direction for the motor rotation
-  @param unsigned int: The rotation's speed in steps/sec (0,maxSpeed]     
-*/
-void StepperMotor::MakeTurnByStepsInThread(
-                                            DIRECTION direction,
-                                            unsigned int stepsRequired, 
-                                            unsigned int speed
-                                          )
-{
-  // The access to TurnBySteps function is mutually exclusive
-	std::lock_guard<std::mutex> guard(stepperMutex);
-
-  // Turn the motor
-  TurnBySteps(direction, stepsRequired, speed);
-}
-
-
-/*
   Public method to turn the motor by degrees
   @param DIRECTION: The desired direction for the motor rotation
   @param double: The degrees required
-  @param double: The rotation's speed in degrees/sec (0,maxSpeed * 360 / stepsPerRevolution]    
+  @param double: The rotation's speed in degrees/sec (0,MaxStepsPerSecond * 360 / stepsPerRevolution]    
   @param bool: Flag to print / no print the messages on the console. Default value: <false>     
 */
 void StepperMotor::TurnByDegrees(
@@ -246,6 +195,147 @@ void StepperMotor::TurnByDegrees(
 
   // Turn the motor
   TurnBySteps(direction, degreesToStepsRequired, speedInSteps);
+}
+
+/*
+  Public method to turn the motor continuously inside a thread
+  @param DIRECTION: The desired direction for the motor rotation
+  @param unsigned int: The steps required
+  @param unsigned int: The rotation's speed in steps/sec (0,MaxStepsPerSecond] 
+  @param bool: Flag to print / no print the messages on the console. Default value: <false> 
+*/
+void StepperMotor::TurnByStepsInThread( 
+                                        DIRECTION direction, 
+                                        unsigned int stepsRequired,
+                                        unsigned int speed, 
+                                        bool printMessages
+                                      )
+{
+  if (printMessages == true)
+  {
+    std::string message = "Rotation in a thread has been activated with a speed of: " + 
+                          std::to_string(speed) + " steps/second\n";
+    std::cout << RainbowText(message, "Light Gray");
+  }
+  
+  std::thread rotationThread ( 
+                              &StepperMotor::MakeTurnByStepsInThread, 
+                              this,
+                              direction,
+                              stepsRequired, 
+                              speed,
+                              printMessages
+                            );
+  
+  rotationThread.detach();
+
+  stepperThreadsVector.push_back(std::move(rotationThread)); 
+}
+
+/*
+  Private method that contains the routine to turn the motor continuously
+  @param DIRECTION: The desired direction for the motor rotation
+  @param unsigned int: The steps required
+  @param unsigned int: The rotation's speed in steps/sec (0,MaxStepsPerSecond]
+  @param bool: Flag to print / no print the messages on the console. Default value: <false>     
+*/
+void StepperMotor::MakeTurnByStepsInThread(
+                                            DIRECTION direction,
+                                            unsigned int stepsRequired, 
+                                            unsigned int speed, 
+                                            bool printMessages
+                                          )
+{
+
+  // Unset the flag to false
+  finishThreadFlag = false;
+
+  // Check the speed limit value
+  if (speed > maxStepsPerSecond)
+    speed = maxStepsPerSecond;
+
+  if (printMessages == true)
+  {
+    std::string message;
+    if (direction == CW) 
+      message = "Turning stepper motor CW ";
+    else
+      message = "Turning stepper motor CCW ";
+
+    message +=
+    std::to_string(stepsRequired) + " steps at " + 
+    std::to_string(speed) + " steps/second\n";
+
+    std::cout << RainbowText(message, "Light Gray");
+  }
+
+  // local counter for the coils steps
+  int coilStep {0};
+
+  // Turn in CW direction
+  if (direction == CW)
+  {
+    for (int i = 0; i < stepsRequired; i++)
+    {
+      // Update the appropiate the coil sequence activation 
+      coilStep = stepsPerMode - 1 - (i % stepsPerMode);
+
+      // Turn the motor 1 step while the flag is to false
+      std::unique_lock<std::mutex> uniq_lck(mut);
+      if (!finishThreadFlag)
+      {
+        uniq_lck.unlock();
+        this->Turn1Step(coilStep, speed);
+        uniq_lck.lock();
+      }
+      else
+      {
+        // Set the flag back to false
+        finishThreadFlag = false;
+        uniq_lck.unlock();
+        break;
+      }
+      
+      // Update counters
+      stepsCounter++;
+      currentStep++;
+    }
+  }
+  // Turn in CCW direction
+  else if (direction == CCW)
+  {
+    for (int i = 0; i < stepsRequired; i++)
+    {
+      // Update the appropiate the coil sequence activation 
+      coilStep = i % stepsPerMode;
+
+      // Turn the motor 1 step while the flag is to false
+      std::unique_lock<std::mutex> uniq_lck(mut);
+      if (!finishThreadFlag)
+      {
+        uniq_lck.unlock();
+        this->Turn1Step(coilStep, speed);
+        uniq_lck.lock();
+      }
+      else
+      {
+        // Set the flag back to false
+        finishThreadFlag = false;
+        uniq_lck.unlock();
+        break;
+      }
+      
+      // Update counters
+      stepsCounter++;
+      currentStep--;
+    }
+  }
+}
+
+// Interface method to get the absolute steps counter
+void StepperMotor::SetFinishThreadFlag(bool value) 
+{
+  finishThreadFlag = value;
 }
 
 /*
@@ -287,7 +377,7 @@ void StepperMotor::SetCurrentStep(int desiredStepValue)
 StepperMotor::~StepperMotor() 
 {
   // Iterate over the threads vector
-  for (std::thread & th : stepperThreads)
+  for (std::thread & th : stepperThreadsVector)
   {
     if (th.joinable())
       th.join();

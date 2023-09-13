@@ -4,7 +4,7 @@
 03/04/2022
 https://github.com/wgaonar/BeagleCPP
 
-- Move the stepperMotor by steps in fullStep with 1 Coil mode
+- Move the stepperMotor by steps in full step with 1 Coil mode
 
 Class: STEPPERMOTOR
 ******************************************************************************/

@@ -4,7 +4,7 @@
 08/04/2022
 https://github.com/wgaonar/BeagleCPP
 
-- Move the stepperMotor by steps in halfStep mode
+- Move the stepperMotor by steps in half step mode with 2 coils
 
 Class: STEPPERMOTOR
 ******************************************************************************/
@@ -20,18 +20,21 @@ GPIO IN2 (P8_14);
 GPIO IN3 (P8_16);
 GPIO IN4 (P8_18);
 
-// Declare the stepper motor mode
+/*
+  Declare the stepper motor mode 
+  <fullStep1Coil / fullStep2Coils / halfStep>
+*/
 STEPPER_MODE controlMode {halfStep};
 
-// Declare the number of steps per revolution for half step mode
-unsigned int stepsPerRevolution {4096};
+// Declare explicitly the number of steps per revolution
+unsigned int stepsPerRevolution {2048};
 
-// Declare the maxSpeed steps/second
+// Declare explicitly the maxSpeed in steps/second
 unsigned int maxSpeed = 500;
 
 /*
   Declare the 28BYJ-48 stepper motor object with:
-  full step with 2 coils at the same time, 
+  half step with 2 coils at the same time, 
   2048 steps per revolution 
   and a maximum speed of 500 steps/second
 */
@@ -45,7 +48,7 @@ int main()
   cout << RainbowText(message,"Blue", "White", "Bold") << endl;
 
   /* 
-    Turn the stepper motor 1/4-turn in CW direction in halfstep
+    Turn the stepper motor 1/4-turn in CW direction in half step with 2 coils
     mode at 500 steps/second
   */
   myStepper.TurnBySteps(CW, 1024);
@@ -54,7 +57,7 @@ int main()
 
 
   /* 
-    Turn the stepper motor 1/4-turn in CCW direction in halfstep 
+    Turn the stepper motor 1/4-turn in CCW direction in half step with 2 coils
     mode at 500 steps/second
   */
   myStepper.TurnBySteps(CCW, 1024);

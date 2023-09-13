@@ -43,6 +43,12 @@ int main()
   {
     cout << "Waiting for 'y' keystroke while the stepper motor is turning CW: ";
     cin >> userInput;
+    if (userInput == 'y')
+    {
+      myStepper.SetFinishThreadFlag(true);
+      break;
+    }
+    this_thread::sleep_for(10ms);
   }
 
   cout << "Steps executed by the motor: " << myStepper.GetStepsCounter() << endl;
@@ -57,6 +63,12 @@ int main()
   {
     cout << "Waiting for 'y' keystroke while the stepper motor is turning CCW: ";
     cin >> userInput;
+    if (userInput == 'y')
+    {
+      myStepper.SetFinishThreadFlag(true);
+      break;
+    }
+    this_thread::sleep_for(10ms);
   }
 
   cout << "Steps executed by the motor: " << myStepper.GetStepsCounter() << endl;

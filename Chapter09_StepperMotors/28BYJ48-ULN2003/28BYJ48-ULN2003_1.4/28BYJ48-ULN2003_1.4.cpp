@@ -4,7 +4,7 @@
 20/04/2022
 https://github.com/wgaonar/BeagleCPP
 
-- Move the stepperMotor by degrees in fullStep with 1 Coil mode
+- Move the stepperMotor by degrees in full step with 1 Coil mode
 
 Class: STEPPERMOTOR
 ******************************************************************************/
@@ -34,7 +34,7 @@ int main()
   cout << RainbowText(message,"Blue", "White", "Bold") << endl;
 
   /* 
-    Turn the stepper motor 90 degrees in CW direction in fullstep 
+    Turn the stepper motor 90 degrees in CW direction in full step 
     mode with 2 coils at the same time at 500 steps/second
   */
   cout << "Turning the stepper motor 90° CW" << endl;
@@ -46,7 +46,7 @@ int main()
         << myStepper.GetCurrentStep() << "\n\n";
 
    /* 
-    Turn the stepper motor 540 degrees (1.5 turns) in CCW direction in fullstep 
+    Turn the stepper motor 540 degrees (1.5 turns) in CCW direction in full step 
     mode with 2 coils at the same time at 500 steps/second
   */
   cout << "Turning the stepper motor 540° CCW" << endl;

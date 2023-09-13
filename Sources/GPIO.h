@@ -5,10 +5,10 @@
 #include <thread>
 #include <map>
 
-#include "RAINBOWCOLORS.h"
-#include "BLACKPIN_ID.h"
+// #include "RAINBOWCOLORS.h"
+// #include "BLACKPIN_ID.h"
+// #include "MISCELLANEOUS.h"
 #include "SYSFILEACCESS.h"
-#include "MISCELLANEOUS.h"
 
 const std::string GPIO_PATH("/sys/class/gpio/");
 

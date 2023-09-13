@@ -4,7 +4,7 @@
 08/04/2022
 https://github.com/wgaonar/BeagleCPP
 
-- Move the stepperMotor by steps in fullStep with 2 Coils mode
+- Move the stepperMotor by steps in full step with 2 Coils mode
 
 Class: STEPPERMOTOR
 ******************************************************************************/
@@ -22,14 +22,14 @@ GPIO IN4 (P8_18);
 
 /*
   Declare the stepper motor mode 
-  (fullStep1Coil / fullStep2Coils / halfStep)
+  <fullStep1Coil / fullStep2Coils / halfStep>
 */
 STEPPER_MODE controlMode {fullStep2Coils};
 
-// Declare the number of steps per revolution
+// Declare explicitly the number of steps per revolution
 unsigned int stepsPerRevolution {2048};
 
-// Declare the maxSpeed steps/second
+// Declare explicitly the maxSpeed in steps/second
 unsigned int maxSpeed = 500;
 
 /*
@@ -48,7 +48,7 @@ int main()
   cout << RainbowText(message,"Blue", "White", "Bold") << endl;
 
   /* 
-    Turn the stepper motor 1/4-turn in CW direction in fullstep 
+    Turn the stepper motor 1/4-turn in CW direction in full step with 2 coils
     mode with 2 coils at the same time at 500 steps/second
   */
   myStepper.TurnBySteps(CW, 512);
@@ -57,7 +57,7 @@ int main()
 
 
   /* 
-    Turn the stepper motor 1/4-turn in CCW direction in fullstep 
+    Turn the stepper motor 1/4-turn in CCW direction in full step with 2 coils
     mode with 2 coils at the same time at 500 steps/second
   */
   myStepper.TurnBySteps(CCW, 512);

@@ -76,7 +76,12 @@
     "numeric": "cpp",
     "random": "cpp",
     "list": "cpp",
-    "future": "cpp"
+    "future": "cpp",
+    "__bits": "cpp",
+    "__verbose_abort": "cpp",
+    "variant": "cpp",
+    "compare": "cpp",
+    "concepts": "cpp"
   },
   "cSpell.words": [
     "DCMOTOR",
