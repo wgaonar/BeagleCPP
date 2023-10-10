@@ -332,7 +332,13 @@ void StepperMotor::MakeTurnByStepsInThread(
   }
 }
 
-// Interface method to get the absolute steps counter
+// Interface method to get the stopping flag
+bool StepperMotor::GetFinishThreadFlag()
+{
+  return finishThreadFlag;
+}
+
+// Interface method to set the stopping flag
 void StepperMotor::SetFinishThreadFlag(bool value) 
 {
   finishThreadFlag = value;

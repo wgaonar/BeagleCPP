@@ -99,12 +99,13 @@ private:
   // Mutexes to protect the shared variables
   std::mutex mut;
  
-  // Flags for thread communication
+  // Flag for stopping the thread from the main program
   bool finishThreadFlag {false};
 
   // Method to turn the motor continuously in a thread
   virtual void MakeTurnByStepsInThread(DIRECTION, unsigned int, unsigned int, bool);
 
+  // Vector of threads to store each turn.
   std::vector <std::thread> stepperThreadsVector;
 
 public:
@@ -143,8 +144,12 @@ public:
                                     bool printMessages = false
                                   );
 
-  // Interface method to get the absolute steps counter
+  // Interface method to get the stopping flag
+  virtual bool GetFinishThreadFlag();
+  
+  // Interface method to set the stopping flag
   virtual void SetFinishThreadFlag(bool);
+
 
   // Interface method to get the absolute steps counter
   virtual int GetStepsCounter();
