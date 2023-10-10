@@ -102,7 +102,7 @@ private:
   // Flag for stopping the thread from the main program
   bool finishThreadFlag {false};
 
-  // Method to turn the motor continuously in a thread
+  // Method to turn the motor by steps continuously in a thread
   virtual void MakeTurnByStepsInThread(DIRECTION, unsigned int, unsigned int, bool);
 
   // Vector of threads to store each turn.
@@ -136,7 +136,7 @@ public:
                             bool printMessages = false
                           );
 
-  // Interface method to turn the motor continuously
+  // Interface method to turn the motor by steps continuously
   virtual void TurnByStepsInThread(
                                     DIRECTION, 
                                     unsigned int stepsRequired,
@@ -144,9 +144,17 @@ public:
                                     bool printMessages = false
                                   );
 
+  // Interface method to turn the motor by degrees continuously
+  virtual void TurnByDegreesInThread(
+                                    DIRECTION, 
+                                    double degreesRequired,
+                                    double speed = defaultMaxStepsPerSecond, 
+                                    bool printMessages = false
+                                  );
+
   // Interface method to get the stopping flag
   virtual bool GetFinishThreadFlag();
-  
+
   // Interface method to set the stopping flag
   virtual void SetFinishThreadFlag(bool);
 

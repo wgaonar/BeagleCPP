@@ -198,7 +198,7 @@ void StepperMotor::TurnByDegrees(
 }
 
 /*
-  Public method to turn the motor continuously inside a thread
+  Public method to turn the motor by steps continuously inside a thread
   @param DIRECTION: The desired direction for the motor rotation
   @param unsigned int: The steps required
   @param unsigned int: The rotation's speed in steps/sec (0,MaxStepsPerSecond] 
@@ -233,7 +233,7 @@ void StepperMotor::TurnByStepsInThread(
 }
 
 /*
-  Private method that contains the routine to turn the motor continuously
+  Private method that contains the routine to turn the motor by steps continuously
   @param DIRECTION: The desired direction for the motor rotation
   @param unsigned int: The steps required
   @param unsigned int: The rotation's speed in steps/sec (0,MaxStepsPerSecond]
@@ -330,6 +330,51 @@ void StepperMotor::MakeTurnByStepsInThread(
       currentStep--;
     }
   }
+}
+
+/*
+  Public method to turn the motor by degrees continuously inside a thread
+  @param DIRECTION: The desired direction for the motor rotation
+  @param double: The degrees required
+  @param double: The rotation's speed in degrees/sec (0,MaxStepsPerSecond * 360 / stepsPerRevolution]    
+  @param bool: Flag to print / no print the messages on the console. Default value: <false>   
+*/
+void StepperMotor::TurnByDegreesInThread( 
+                                        DIRECTION direction, 
+                                        double degreesRequired,
+                                        double speed, 
+                                        bool printMessages
+                                      )
+{
+  if (printMessages == true)
+  {
+    std::string message = "Rotation in a thread has been activated with a speed of: " + 
+                          std::to_string(speed) + " steps/second\n";
+    std::cout << RainbowText(message, "Light Gray");
+  }
+
+  // Convert degrees to steps
+  unsigned int degreesToStepsRequired = static_cast<unsigned int>(degreesRequired * stepsPerRevolution / 360);
+
+  // Convert speed degrees/sec to steps/sec
+  unsigned int speedInSteps = static_cast<unsigned int>(speed * stepsPerRevolution / 360);
+  
+  /*
+    Call the method to turn by steps with the converted variables: degrees to steps, and speed to 
+    steps per seconds 
+  */
+  std::thread rotationThread ( 
+                              &StepperMotor::MakeTurnByStepsInThread, 
+                              this,
+                              direction,
+                              degreesToStepsRequired, 
+                              speedInSteps,
+                              printMessages
+                            );
+  
+  rotationThread.detach();
+
+  stepperThreadsVector.push_back(std::move(rotationThread)); 
 }
 
 // Interface method to get the stopping flag
