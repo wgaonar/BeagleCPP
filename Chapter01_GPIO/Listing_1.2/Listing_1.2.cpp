@@ -38,6 +38,6 @@ int main()
   }
   
   message = "Main program finishes here...";
-  cout << RainbowText(message,"Blue", "Bold") << endl;
+  cout << RainbowText(message,"Blue", "White", "Bold") << endl;
   return 0;
 }

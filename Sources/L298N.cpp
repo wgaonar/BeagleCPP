@@ -15,7 +15,7 @@ L298N::L298N (DCMotor& newMotorA) :
 
   std::string message;
   std::string swapStringMotorA {this->MotorA.swapSpinFlag ? "True" : "False"};
-  message = "\nTB6612FNG driver module with the next components / pins was created and activated:\n" +
+  message = "\nL298N driver module with the next components / pins was created and activated:\n" +
             std::string("\tMotorA:\n") +
             std::string("\t\tAIN1: ") + this->MotorA.input1Pin.GetPinHeaderId() + "\n" + 
             std::string("\t\tAIN2: ") + this->MotorA.input2Pin.GetPinHeaderId() + "\n" + 
@@ -38,7 +38,7 @@ L298N::L298N (DCMotor& newMotorA,
   std::string message;
   std::string swapStringMotorA {this->MotorA.swapSpinFlag ? "True" : "False"};
   std::string swapStringMotorB {this->MotorB.swapSpinFlag ? "True" : "False"};
-  message = "\nTB6612FNG driver module with the next components / pins was created and activated:\n" +
+  message = "\nL298N driver module with the next components / pins was created and activated:\n" +
             std::string("\tMotorA:\n") +
             std::string("\t\tAIN1: ") + this->MotorA.input1Pin.GetPinHeaderId() + "\n" + 
             std::string("\t\tAIN2: ") + this->MotorA.input2Pin.GetPinHeaderId() + "\n" + 

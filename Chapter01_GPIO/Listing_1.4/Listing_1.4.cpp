@@ -16,7 +16,7 @@ using namespace std;
 int main()
 {
   string message = "Main program starting here...";
-  cout << RainbowText(message,"Blue", "Bold") << endl;
+  cout << RainbowText(message,"Blue", "White", "Bold") << endl;
   
   GPIO ledPin(P8_12, OUTPUT);
 
