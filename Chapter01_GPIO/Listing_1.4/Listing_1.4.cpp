@@ -22,7 +22,7 @@ int main()
 
   STATE ledState = LOW;
   unsigned long previousMillis = 0; // will store last time LED was updated
-  const int interval = 1000;       // interval at which to blink (milliseconds)
+  const int interval = 1000;        // interval at which to blink (milliseconds)
 
   int count = 0;
   while (count < 10)

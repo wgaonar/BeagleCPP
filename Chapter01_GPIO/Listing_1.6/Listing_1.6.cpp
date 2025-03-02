@@ -16,7 +16,7 @@ using namespace std;
 int main()
 {
   string message = "Main program starting here...";
-  cout << RainbowText(message,"Blue", "Bold") << endl;
+  cout << RainbowText(message,"Blue", "White", "Bold") << endl;
   
   GPIO ledPin(P8_12, OUTPUT);
 
@@ -52,7 +52,7 @@ int main()
     }  
   }
 
-  // seconde while loop for a 100ns
+  // seconde while loop for a 100ns for a delay
   interval = 500;
   count = 0;
   while (count < 1000)
@@ -81,6 +81,6 @@ int main()
   }
 
   message = "Main program finishes here...";
-  cout << RainbowText(message,"Blue", "Bold") << endl;
+  cout << RainbowText(message,"Blue", "White", "Bold") << endl;
   return 0;
 }
