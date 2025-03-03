@@ -68,7 +68,7 @@ void LED::Blink(int duration)
 {
   std::string message 
   {
-    "Blinking has been activated with duration of: "
+    "Blinking has been activated on LED with duration of: "
     + std::to_string(duration) + "ms on pin: " + this->GetPinHeaderId()
   };
   std::cout << RainbowText(message, "Light Blue", "Default", "Bold") << std::endl; 
@@ -108,7 +108,7 @@ void LED::Flash(int timeOn, int period)
 {
   std::string message 
   {
-    "Flashing has been activated with a time ON of: "
+    "Flashing has been activated on LED with time ON of: "
     + std::to_string(timeOn) + "ms on a period of: " 
     + std::to_string(period) + "ms on pin: " + this->GetPinHeaderId()
   };
@@ -150,8 +150,8 @@ void LED::HeartBeat(int timeOn, int period)
 {
   std::string message 
   {
-    "Heart beat has been activated with a time ON of: "
-    + std::to_string(timeOn) + " on a period of: " 
+    "Heart beat has been activated on LED with a time ON of: "
+    + std::to_string(timeOn) + "ms on a period of: " 
     + std::to_string(period) + "ms on pin: " + this->GetPinHeaderId()
   };
   std::cout << RainbowText(message, "Light Blue", "Default", "Bold") << std::endl;
