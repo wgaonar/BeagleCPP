@@ -19,8 +19,8 @@ int main() {
   string message = "Main program starting here...";
   cout << RainbowText(message,"Blue", "White", "Bold") << endl;
   
-  BUTTON redButtonPin(P8_08); // The pull-down button
-  BUTTON yellowButtonPin(P8_10); // The pull-up button
+  BUTTON redButtonPin(P8_08);     // Connected to the pull-down button
+  BUTTON yellowButtonPin(P8_10);  // Connected to the pull-up button
 
   cout << endl << "The program is waiting for a press on a PULL DOWN Button" << endl;
   cout << "Please, press the button!" << endl;

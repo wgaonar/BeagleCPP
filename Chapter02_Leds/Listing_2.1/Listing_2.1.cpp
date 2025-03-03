@@ -1,10 +1,10 @@
 /************************************************************************
 Listing_2.1.cpp
 @wgaonar
-30/03/2021
+01/03/2025
 https://github.com/wgaonar/BeagleCPP
 
-Blink two LEDs with its own method Blink() 
+Blink two LEDs with its own Blink() method 
 
 Class: LED
 ************************************************************************/
@@ -13,7 +13,8 @@ Class: LED
 
 using namespace std;
 
-int main() {
+int main() 
+{
   string message = "Main program starting here...";
   cout << RainbowText(message,"Blue", "White", "Bold") << endl;
   

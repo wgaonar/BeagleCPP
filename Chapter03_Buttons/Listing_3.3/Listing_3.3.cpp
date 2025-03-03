@@ -1,7 +1,7 @@
 /******************************************************************************
 Listing_3.3.cpp
 @wgaonar
-19/03/2021
+02/03/2025
 https://github.com/wgaonar/BeagleCPP
 
 Uses the AddEventDetection() method to call a user defined callback 
@@ -28,12 +28,12 @@ int main() {
   string message = "Main function starting here...";
   cout << endl << RainbowText(message,"Blue", "White", "Bold") << endl;
   
-  cout  << "The program is timing for 5 seconds and is pending"
-        << " if a press on a button occurs" << endl;
+  cout  << "The program is timing for 10 seconds and is awaiting " << endl
+        << "if a press on a button occurs" << endl;
 
   redButtonPin.AddEventDetection(RISING, &UserCallBackFunction_ButtonRed);
-  for (int i = 0; i < 5; i++) {
-    cout << 5-i << endl;
+  for (int i = 10; i > 0; i--) {
+    cout << i << endl;
     DelayMilliseconds(1000);
   }
 

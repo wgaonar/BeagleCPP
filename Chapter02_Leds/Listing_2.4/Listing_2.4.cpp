@@ -20,7 +20,7 @@ int main()
   
   LED ledPin(P8_16);
 
-  cout <<  "Starting a cycle to Toggle a led 10 times" << endl;
+  cout <<  "Starting a cycle to Toggle a LED 10 times" << endl;
   ledPin.TurnOn();
 
   for (size_t i = 0; i < 10; i++) 
