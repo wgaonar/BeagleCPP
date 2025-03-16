@@ -1,10 +1,10 @@
 /************************************************************************
 Listing_1.3.cpp
 @wgaonar
-24/03/2021
+16/03/2025
 https://github.com/wgaonar/BeagleCPP
 
-Turning ON / OFF  six LEDs in order
+Turning ON / OFF  six LEDs in a cylon pattern
 
 Class: GPIO
 ************************************************************************/
@@ -25,42 +25,42 @@ int main()
   GPIO whiteLed(P8_18, OUTPUT);
   GPIO blueLed(P8_26, OUTPUT);
 
-  char userInput = '\0';
-  while (userInput != 'y')
+  char userInput = 'y';
+  while (userInput == 'y')
   {
-    int time = 100;
+    int delay = 100;
 
     redLed.DigitalWrite(HIGH);
-    DelayMilliseconds(time);
-
+    DelayMilliseconds(delay);
+    
     yellowLed.DigitalWrite(HIGH);
-    DelayMilliseconds(time);
-
+    DelayMilliseconds(delay);
+    
     greenLed.DigitalWrite(HIGH);
-    DelayMilliseconds(time);
-
+    DelayMilliseconds(delay);
+    
     whiteLed.DigitalWrite(HIGH);
-    DelayMilliseconds(time);
-
+    DelayMilliseconds(delay);
+    
     blueLed.DigitalWrite(HIGH);
-    DelayMilliseconds(time);
-
+    DelayMilliseconds(delay);
+    
     blueLed.DigitalWrite(LOW);
-    DelayMilliseconds(time);
-
+    DelayMilliseconds(delay);
+    
     whiteLed.DigitalWrite(LOW);
-    DelayMilliseconds(time);
-
+    DelayMilliseconds(delay);
+    
     greenLed.DigitalWrite(LOW);
-    DelayMilliseconds(time);
-
+    DelayMilliseconds(delay);
+    
     yellowLed.DigitalWrite(LOW);
-    DelayMilliseconds(time);
-
+    DelayMilliseconds(delay);
+    
     redLed.DigitalWrite(LOW);
-    DelayMilliseconds(time);
-
-    cout << "Enter 'y', to finish the program or another key to repeat: " << endl;
+    DelayMilliseconds(delay);
+    
+    cout << "Enter 'y', to do a cylon pattern again or another key to exit: " << endl;
     cin >> userInput;
   }
   
