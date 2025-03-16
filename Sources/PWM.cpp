@@ -64,7 +64,8 @@ void PWM::InitPWMPin()
   idMap[P9_16] = "P9_16";
   idMap[P9_21] = "P9_21";
   idMap[P9_22] = "P9_22";
-
+/*
+Debian 10.3
   switch (id)
   {
   case P8_13:
@@ -84,6 +85,31 @@ void PWM::InitPWMPin()
     break;
   case P9_22:
     name = EHRPWM0_PATH + "pwmchip1/pwm-1:0/";
+    break;
+  default:
+    break;
+  }
+  */
+
+  switch (id)
+  {
+  case P8_13:
+    name = EHRPWM2_PATH + "pwm1/";
+    break;
+  case P8_19:
+    name = EHRPWM2_PATH + "pwm0/";
+    break;
+  case P9_14:
+    name = EHRPWM1_PATH + "pwm0/";
+    break;
+  case P9_16:
+    name = EHRPWM1_PATH + "pwm1/";
+    break;
+  case P9_21:
+    name = EHRPWM0_PATH + "pwm1/";
+    break;
+  case P9_22:
+    name = EHRPWM0_PATH + "pwm0/";
     break;
   default:
     break;

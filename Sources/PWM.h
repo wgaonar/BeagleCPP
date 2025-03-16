@@ -17,10 +17,19 @@
 */
 using callbackType = int (*)();
 
+/*
+Debian 10.3
 const std::string PWM_PATH ("/sys/devices/platform/ocp/");
 const std::string EHRPWM0_PATH = "48300000.epwmss/48300200.pwm/pwm/";
 const std::string EHRPWM1_PATH = "48302000.epwmss/48302200.pwm/pwm/";
 const std::string EHRPWM2_PATH = "48304000.epwmss/48304200.pwm/pwm/";
+*/
+
+const std::string PWM_PATH ("/sys/class/pwm/");
+const std::string EHRPWM0_PATH = "pwmchip3/"; // P9_21, P9_22
+const std::string EHRPWM1_PATH = "pwmchip5/"; // P9_14, P9_16
+const std::string EHRPWM2_PATH = "pwmchip7/"; // P8_13, P8_19
+
 
 class PWM : public SYSFILEACCESS
 {
