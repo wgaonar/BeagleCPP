@@ -19,7 +19,7 @@ int main()
   cout << RainbowText(message,"Blue", "White", "Bold") << endl;
   
   message = "Setting a PWM mode on a blue led";
-  cout << RainbowText(message, "Blue") << endl;
+  cout << RainbowText(message, "Sky Blue") << endl;
   PWM pwmBlueLedPin(P8_13);
 
   // Make a 'stairs pattern to up' on the Led
